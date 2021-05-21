@@ -1,0 +1,11 @@
+overwrite: true
+schema: "../api/schema.graphql"
+documents: null
+generates:
+  src/generated/graphql.ts:
+    config:
+      avoidOptionals: true
+      useIndexSignature: true # apollo-server compatibility
+    plugins:
+      - "typescript"
+      - "typescript-resolvers"
