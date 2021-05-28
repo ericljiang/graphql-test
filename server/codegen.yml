@@ -4,7 +4,6 @@ documents: null
 generates:
   src/generated/graphql.ts:
     config:
-      avoidOptionals: true
       useIndexSignature: true # apollo-server compatibility
     plugins:
       - "typescript"

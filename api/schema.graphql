@@ -1,3 +1,28 @@
 type Query {
-    hello(name: String!): String!
+  hello(name: String!): String!
+  messages: [String!]!
+  games: [Game]
+}
+
+type Mutation {
+  message(message: String!): String!
+  createGame(name: String!): Game
+  joinGame(gameId: String!, playerId: String!): Game
+  leaveGame(gameId: String!, playerId: String!): Game
+}
+
+type Subscription {
+  gameCreated: Game
+  gameUpdated(id: String!): Game
+}
+
+type Game {
+  id: String!
+  name: String
+  players: [String!]
+}
+
+type Player {
+  id: String!
+  name: String
 }
