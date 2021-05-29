@@ -1,7 +1,6 @@
 import React from 'react';
 import { gql, useQuery } from '@apollo/client';
 import GameList from './GameList';
-import CreateGame from './CreateGame';
 // import logo from './logo.svg';
 // import './App.css';
 

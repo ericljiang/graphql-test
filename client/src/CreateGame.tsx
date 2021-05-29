@@ -7,11 +7,11 @@ type CreateGameProps = {
 export default function CreateGame({ refetchGames }: CreateGameProps) {
   let input: any;
   const [createGame, { data }] = useMutation(gql`
-  mutation CreateGame($name: String!) {
-    createGame(name: $name) {
-      id
-    }
-  }`);
+    mutation CreateGame($name: String!) {
+      createGame(name: $name) {
+        id
+      }
+    }`);
   return (
     <form
       onSubmit={e => {
