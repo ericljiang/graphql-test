@@ -1,6 +1,9 @@
 import React from 'react';
 import { gql, useQuery } from '@apollo/client';
 import GameList from './GameList';
+import LoginButton from './LoginButton';
+import LogoutButton from './LogoutButton';
+import Profile from './Profile';
 // import logo from './logo.svg';
 // import './App.css';
 
@@ -33,6 +36,9 @@ function App() {
   if (error) return <p>Error :(</p>;
   return (
     <div className="App">
+      <LoginButton />
+      <LogoutButton />
+      <Profile />
       <p>{data.hello}</p>
       <GameList />
     </div>
