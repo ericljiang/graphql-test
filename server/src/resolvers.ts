@@ -1,6 +1,6 @@
 import { Game, Resolvers, SubscriptionGameUpdatedArgs } from './generated/graphql';
 import { GameDataSource, MessageDataSource } from './datasources';
-import { PubSub, UserInputError, withFilter } from 'apollo-server';
+import { AuthenticationError, PubSub, UserInputError, withFilter } from 'apollo-server';
 
 export const pubsub = new PubSub();
 
@@ -19,7 +19,10 @@ export const resolvers: Resolvers = {
       (dataSources.messageDataSource as MessageDataSource).pushMessage(args.message);
       return args.message
     },
-    createGame: (_root, args, { dataSources }) => {
+    createGame: (_root, args, { dataSources, isAuthenticated }) => {
+      if (!isAuthenticated) {
+        throw new AuthenticationError("Not authenticated.");
+      }
       const gameDataSource = dataSources.gameDataSource as GameDataSource;
       const game = gameDataSource.createGame(args.name);
       pubsub.publish("GAME_CREATED", {

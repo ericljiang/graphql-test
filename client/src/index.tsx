@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { Auth0Provider } from "@auth0/auth0-react";
+import { ApolloProviderWithAuth0 } from './ApolloProviderWithAuth0';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
@@ -16,12 +17,15 @@ ReactDOM.render(
     domain="dev-bwycovfn.us.auth0.com"
     clientId="5bNPWgEydGyYojJBDkWozOV6nH5qflsw"
     redirectUri={window.location.origin}
+    audience="https://localhost:4000"
   >
     <ApolloProvider client={client}>
+    {/* <ApolloProviderWithAuth0> */}
       <React.StrictMode>
         <App />
       </React.StrictMode>
     </ApolloProvider>
+    {/* </ApolloProviderWithAuth0> */}
   </Auth0Provider>,
   document.getElementById('root')
 );

@@ -17,6 +17,24 @@ const server = new ApolloServer({
       messageDataSource: new MessageDataSource(messages),
       gameDataSource: new GameDataSource(games)
     }
+  },
+  context: ({ req }) => {
+    // Get the user token from the headers.
+    const authHeader = req.headers.authorization;
+    // console.log(req.headers);
+    if (authHeader) {
+      return {
+        isAuthenticated: true,
+      };
+    } else {
+      return { isAuthenticated: false };
+    }
+
+    // Try to retrieve a user with the token
+    // const user = getUser(token);
+
+    // Add the user to the context
+    // return { user };
   }
 });
 
