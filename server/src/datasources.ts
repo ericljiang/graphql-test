@@ -4,7 +4,7 @@ import { customAlphabet } from 'nanoid';
 import { alphanumeric } from 'nanoid-dictionary';
 
 export class MessageDataSource extends DataSource {
-  private messages: Array<string>;
+  private readonly messages: Array<string>;
   constructor(messages: Array<string>) {
     super();
     this.messages = messages;
@@ -18,7 +18,7 @@ export class MessageDataSource extends DataSource {
 }
 
 export class GameDataSource extends DataSource {
-  private games: Map<string, Game>;
+  private readonly games: Map<string, Game>;
   constructor(games: Map<string, Game>) {
     super();
     this.games = games;
@@ -29,10 +29,16 @@ export class GameDataSource extends DataSource {
   getGame(id: string) {
     return this.games.get(id);
   }
-  createGame(name: string) {
+
+  createGame(name: string, ownerId: string) {
     const nanoid = customAlphabet(alphanumeric, 12);
     const id = nanoid();
-    const game = { id, name, players: [] };
+    const game: Game = {
+      id: id,
+      ownerId: ownerId,
+      name: name,
+      players: []
+    };
     this.games.set(id, game);
     return game;
   }
