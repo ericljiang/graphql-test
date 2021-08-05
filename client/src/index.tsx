@@ -3,26 +3,43 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import { Auth0Provider } from "@auth0/auth0-react";
+import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+
+const httpLink = createHttpLink({
+  uri: 'http://localhost:4000/graphql',
+});
+
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return headers;
+  }
+  const tokenExpiry = localStorage.getItem('tokenExpiry');
+  if (!tokenExpiry || parseInt(tokenExpiry) < Date.now()) {
+    // TODO refresh token
+  }
+  return {
+    headers: {
+      ...headers,
+      authorization: `Bearer ${token}`
+    }
+  };
+});
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  link: authLink.concat(httpLink)
 });
 
 ReactDOM.render(
-  <Auth0Provider
-    domain="dev-bwycovfn.us.auth0.com"
-    clientId="5bNPWgEydGyYojJBDkWozOV6nH5qflsw"
-    redirectUri={window.location.origin}
-  >
-    <ApolloProvider client={client}>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </ApolloProvider>
-  </Auth0Provider>,
+  <ApolloProvider client={client}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </ApolloProvider>,
   document.getElementById('root')
 );
 

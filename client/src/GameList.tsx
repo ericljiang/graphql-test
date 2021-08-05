@@ -6,6 +6,7 @@ export default function GameList() {
     {
       games {
         id
+        ownerId
         name
       }
     }`,
@@ -15,7 +16,10 @@ export default function GameList() {
   return (
     <>
       <ol>
-        {data.games.map((game: any) => <li>{game.name} ({game.id})</li>)}
+        {data.games.map((game: any) =>
+          <li key={game.id}>
+            "{game.name}" created by {game.ownerId} ({game.id})
+          </li>)}
       </ol>
       <CreateGame refetchGames={refetch} />
     </>
